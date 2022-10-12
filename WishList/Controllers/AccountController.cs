@@ -22,20 +22,22 @@ namespace WishList.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-        [AllowAnonymous]
+       
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View("Register");
         }
 
-        [AllowAnonymous]
+      
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult Register(RegisterViewModel registerViewModel)
         {
             if (!ModelState.IsValid)
             {
-                return View("Register", registerViewModel);
+                return View(registerViewModel);
             }
             var user = new ApplicationUser()
             {
@@ -50,7 +52,7 @@ namespace WishList.Controllers
                 {
                     ModelState.AddModelError("Password", error.Description);
                 }
-                return View("Register", registerViewModel);
+                return View(registerViewModel);
             }
             return RedirectToAction("Index", "Home");
         }
