@@ -35,7 +35,7 @@ namespace WishList.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Register", registerViewModel);
+                return View("Register", registerViewModel);
             }
             var user = new ApplicationUser()
             {
