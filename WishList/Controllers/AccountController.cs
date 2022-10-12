@@ -40,7 +40,8 @@ namespace WishList.Controllers
             var user = new ApplicationUser()
             {
                 UserName = registerViewModel.Email,
-                Email = registerViewModel.Email
+                Email = registerViewModel.Email,
+                PasswordHash = registerViewModel.Password
             };
             var result = _userManager.CreateAsync(user).Result;
             if(!result.Succeeded)
