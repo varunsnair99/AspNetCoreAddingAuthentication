@@ -37,17 +37,10 @@ namespace WishList.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("Register", model);
+                return View(model);
             }
 
-            var user = new ApplicationUser
-            {
-                UserName = model.Email,
-                Email = model.Email,
-                PasswordHash = model.Password
-            };
-
-            var result = _userManager.CreateAsync(user).Result;
+            var result = _userManager.CreateAsync(new ApplicationUser() { Email = model.Email, UserName = model.Email }, model.Password).Result;
 
             if (!result.Succeeded)
             {
@@ -56,7 +49,7 @@ namespace WishList.Controllers
                     ModelState.AddModelError("Password", item.Description);
                 }
 
-                return View("Register", model);
+                return View(model);
             }
 
             return RedirectToAction("Index", "Home");
