@@ -30,30 +30,35 @@ namespace WishList.Controllers
             return View("Register");
         }
 
-      
+
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult Register(RegisterViewModel registerViewModel)
+        public IActionResult Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(registerViewModel);
+                return View("Register", model);
             }
-            var user = new ApplicationUser()
+
+            var user = new ApplicationUser
             {
-                UserName = registerViewModel.Email,
-                Email = registerViewModel.Email,
-                PasswordHash = registerViewModel.Password
+                UserName = model.Email,
+                Email = model.Email,
+                PasswordHash = model.Password
             };
+
             var result = _userManager.CreateAsync(user).Result;
-            if(!result.Succeeded)
+
+            if (!result.Succeeded)
             {
-                foreach(var error in result.Errors)
+                foreach (var item in result.Errors)
                 {
-                    ModelState.AddModelError("Password", error.Description);
+                    ModelState.AddModelError("Password", item.Description);
                 }
-                return View(registerViewModel);
+
+                return View("Register", model);
             }
+
             return RedirectToAction("Index", "Home");
         }
     }
