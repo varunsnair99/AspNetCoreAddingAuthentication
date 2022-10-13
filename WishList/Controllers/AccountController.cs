@@ -82,7 +82,7 @@ namespace WishList.Controllers
         public IActionResult Logout()
         {
             _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Item");
+            return RedirectToAction("Index", "Home");
         }
 
     }
