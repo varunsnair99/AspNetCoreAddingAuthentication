@@ -13,16 +13,16 @@ namespace WishList.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-       
+
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        
+
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
-       
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register()
@@ -54,5 +54,36 @@ namespace WishList.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View("Login");
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var result = _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false).Result;
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View("Login", model);
+            }
+            return RedirectToAction("Index", "Item");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout(LoginViewModel model)
+        {
+            _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Item");
+        }
+
     }
 }
