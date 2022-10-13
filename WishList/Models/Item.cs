@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace WishList.Models
 {
-    [Authorize]
+   
     public class Item
     {
       
